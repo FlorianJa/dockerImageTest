@@ -2,7 +2,7 @@
 {
     public class Class1
     {
-        private int _field = 43;
+        private int _field = 42;
         public int foo()
         {
             return _field;
