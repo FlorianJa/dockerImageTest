@@ -105,7 +105,7 @@ jobs:
     - name: Build and Push Docker image
       run: |
         IMAGE_NAME=ghcr.io/${{ steps.owner.outputs.value }}/myapp:${{ github.ref_name }}
-        docker build -t $IMAGE_NAME -f App/Dockerfile .
+        docker build -t $IMAGE_NAME -f App/Dockerfile App
         docker push $IMAGE_NAME
 
   
