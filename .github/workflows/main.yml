@@ -44,7 +44,7 @@ jobs:
       if: always()
       with:
         name: MSTest Report
-        path: '**/test_results.trx'
+        path: './**/test_results.trx'
         reporter: dotnet-trx
         fail-on-error: true
         fail-on-empty: true
