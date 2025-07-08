@@ -1,4 +1,6 @@
-﻿namespace Lib.Test
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Lib.Test
 {
     [TestClass]
     public sealed class Test1
