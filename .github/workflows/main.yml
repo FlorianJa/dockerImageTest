@@ -36,6 +36,9 @@ jobs:
         --results-directory TestResults
         --collect:"XPlat Code Coverage"
 
+    - name: List Files
+      run: ls -al
+
     - name: Publish Test Results (TRX)
       uses: dorny/test-reporter@v1
       if: always()
