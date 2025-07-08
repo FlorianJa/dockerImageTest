@@ -25,6 +25,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
+    - name: Prepare results directory
+      run: mkdir -p TestResults
+  
     - name: Run Tests
       run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx" --results-directory TestResults
     
