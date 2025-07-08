@@ -25,13 +25,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
-    - name: Prepare results directory
-      run: mkdir -p TestResults
-  
-    - name: Run Tests
-      run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx" --results-directory TestResults
-    
-    - name: Upload Test Report
+    - name: Run Tests with Coverage
+      run: >
+        dotnet test
+        --configuration Release
+        --logger "trx;LogFileName=test_results.trx"
+        --results-directory TestResults
+        --collect:"XPlat Code Coverage"
+
+    - name: Publish Test Results (TRX)
       uses: dorny/test-reporter@v1
       if: always()
       with:
@@ -40,3 +42,19 @@ jobs:
         reporter: dotnet-trx
         fail-on-error: true
         fail-on-empty: true
+
+    - name: Install ReportGenerator
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+    - name: Generate Coverage Report
+      run: >
+        reportgenerator
+        -reports:"**/coverage.cobertura.xml"
+        -targetdir:"CoverageReport"
+        -reporttypes:Html
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: CodeCoverageReport
+        path: CoverageReport
