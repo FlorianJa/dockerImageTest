@@ -1,0 +1,37 @@
+name: .NET 8 MSTest CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Run Tests
+      run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx" --results-directory TestResults
+
+    - name: Publish Test Report
+      uses: dorny/test-reporter@v1
+      if: always() # zeigt auch bei Fehlern das Testergebnis an
+      with:
+        name: MSTest Report
+        path: TestResults/test_results.trx
+        reporter: dotnet-trx
