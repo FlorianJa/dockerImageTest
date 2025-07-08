@@ -26,12 +26,14 @@ jobs:
       run: dotnet build --no-restore --configuration Release
 
     - name: Run Tests
-      run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx" --results-directory TestResults
-
-    - name: Publish Test Report
+      run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx" --results-directory TestResults
+    
+    - name: Upload Test Report
       uses: dorny/test-reporter@v1
-      if: always() # zeigt auch bei Fehlern das Testergebnis an
+      if: always()
       with:
         name: MSTest Report
-        path: TestResults/test_results.trx
+        path: '**/test_results.trx'
         reporter: dotnet-trx
+        fail-on-error: true
+        fail-on-empty: true
